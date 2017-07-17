@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.jtc.dto" default-lazy="false">
+	<class name="TappChannels" table="pg_app_channels">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" length="11" />
+			<generator class="native"></generator>
+		</id>				
+        <property name="createdTime" type="java.lang.Long">
+            <column name="created_time" length="20" not-null="false"/>              
+        </property>		
+        <property name="setting" type="java.lang.String">
+            <column name="setting" length="5000" not-null="false"/>              
+        </property>	
+		<many-to-one name="app" column="app_id" class="com.jtc.dto.Tapplication"  unique="true" not-null="true"/>
+		<many-to-one name="channel" column="channel_id" class="com.jtc.dto.Tchannel"  unique="true" not-null="true"/>
+	</class>
+</hibernate-mapping>

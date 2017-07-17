@@ -1,0 +1,49 @@
+body{
+	font-family: PingFang SC,Microsoft YaHei,Helvetica,STHeiTi,sans-serif!important;
+	background:#fff;
+}
+
+h1,h2,h3,h4,h5,h6{
+	font-family: PingFang SC,Microsoft YaHei,Helvetica,STHeiTi,sans-serif!important;
+}
+
+.content{
+	margin:0;
+	background:white;
+	border-bottom:1px solid #eee;
+}
+
+.content-title{
+	border-bottom:1px solid #eee;
+}
+.content-body{
+	padding:40px;
+}
+
+.paypal_pc{
+	width:140px;
+	height:50px;
+	border:1px solid #eee;
+	cursor:pointer;
+	margin:10px 0;
+	background: url(../images/paypal.png) no-repeat  50% 50%;
+}
+
+.paypal_pc.active{
+	border:1px solid #ff8800;	
+}
+
+.content-bottom{
+	margin-top:20px;
+}
+
+@media (min-width: 768px){
+	body{
+		background:#eee;
+	}
+	.content{
+		margin:50px auto;
+		background:white;
+		border-bottom:1px solid #eee;
+	}
+}

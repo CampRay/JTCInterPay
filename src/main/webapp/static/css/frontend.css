@@ -1,0 +1,107 @@
+h1,h2,h3,h4,h5,h6{
+	font-family: PingFang SC,Microsoft YaHei,Helvetica,STHeiTi,sans-serif!important;
+}
+
+.page-sidebar .page-sidebar-menu > li{
+	line-height:40px;	
+}
+
+.page-sidebar .page-sidebar-menu.page-sidebar-menu-light > li > a{
+	padding-left:20px;
+}
+
+.app-tile{
+	position: relative;
+	display:inline-block;
+	width:300px;
+	height:380px;	
+	margin:0 18px 50px;
+	background: #fff url(../images/app.png) no-repeat  50% 20px;
+	box-shadow: 0 4px 5px rgba(6,0,1,.3);
+}
+
+.app-tile-add{
+	position: relative;
+	display:inline-block;
+	width:300px;
+	height:380px;	
+	margin:0 18px 50px;
+	background: #fff url(../images/add_app.png) no-repeat 50% 40%;
+	box-shadow: 0 4px 5px rgba(6,0,1,.3);
+	cursor:pointer;
+}
+
+
+.app-tile-container{
+	position: absolute;
+	left: 0;
+    right: 0;
+    top: 100px;
+    margin:0 10px;
+    color:#747f8c;
+}
+.app-tile-container:hover{
+	background:#eee;cursor:pointer;
+}
+
+.app-tile-btns{
+	position: absolute;
+	left: 0;
+    right: 0;
+    bottom: 0;
+    padding:10px;
+}
+.app-tile-btn{
+	position:relative;width: 140px;height:80px;float: left;padding-top:20px;cursor:pointer;
+	color:#747f8c;
+}
+.app-tile-btn:hover{
+	background:#eee;
+}
+
+.app-tile-btn i{
+	font-size:28px;
+}
+
+.app-tile > .app-tile-container > h5{
+	color:gray;
+	line-height:40px;
+	font-weight:600;
+}
+
+.app-tile-add .add-app-pannel{
+	position: absolute;
+	width:300px;
+	height:380px;
+}
+
+.app-tile-add .add-app-pannel h3{
+	position: position:relative;
+	font-weight:normal;
+	margin-top:210px;
+}
+
+.app-tile-add .add-app-form{
+	position: absolute;
+	width:300px;
+	height:380px;
+	background: #fff;
+	display:none;	
+}
+.add-app-form .app-form-content{
+	position:relative;
+}
+
+.add-app-form .app-form-content h4{
+	margin-top:70px;
+	line-height:40px;
+}
+
+.add-app-form .app-form-content .form-control{
+	margin:10px auto;
+}
+
+.add-app-form .app-form-content .btn{
+	width:100px;
+	margin:10px;	
+}

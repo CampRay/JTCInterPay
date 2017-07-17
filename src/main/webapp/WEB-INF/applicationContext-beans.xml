@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+    
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd" >
+
+	<context:annotation-config />	
+	<context:component-scan base-package="com.jtc.action,com.jtc.api,com.jtc.dao,com.jtc.service" />
+	
+	<bean class="com.jtc.commons.MyApplicationContextUtil" lazy-init="false"></bean>
+	
+	<!-- 资源文件绑定器 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="i18n.messageResource" /><!-- 设置资源文件路径及名称-->
+		<property name="useCodeAsDefaultMessage" value="true" />
+	</bean>
+		
+	<bean id="localizedFieldService" class="com.jtc.service.impl.LocalizedFieldServiceImpl" autowire="byName"/>	 
+		 	 
+	<bean id="adminUserService" class="com.jtc.service.impl.AdminUserServiceImpl" autowire="byName"/>
+		
+	<bean id="adminRoleService" class="com.jtc.service.impl.AdminRoleServiceImpl" autowire="byName"/>
+	
+	<bean id="adminRoleRightsService" class="com.jtc.service.impl.AdminRoleRightsServiceImpl" autowire="byName"/>
+	
+	<bean id="adminNodesService" class="com.jtc.service.impl.AdminNodesServiceImpl" autowire="byName"/>
+	
+	<bean id="adminInfoService" class="com.jtc.service.impl.AdminInfoServiceImpl" autowire="byName"/>				
+	
+	<bean id="systemSettingService" class="com.jtc.service.impl.SystemSettingServiceImpl" autowire="byName"/>				
+	
+	<bean id="languageService" class="com.jtc.service.impl.LanguageServiceImpl" autowire="byName"/>
+	
+	<bean id="applicationService" class="com.jtc.service.impl.ApplicationServiceImpl" autowire="byName"/>
+	
+	<bean id="adminAppsService" class="com.jtc.service.impl.AdminAppsServiceImpl" autowire="byName"/>
+	
+	<bean id="channelService" class="com.jtc.service.impl.ChannelServiceImpl" autowire="byName"/>		
+	
+	<bean id="appChannelsService" class="com.jtc.service.impl.AppChannelsServiceImpl" autowire="byName"/>
+	
+	<bean id="currencyService" class="com.jtc.service.impl.CurrencyServiceImpl" autowire="byName"/>
+	
+	<bean id="countryService" class="com.jtc.service.impl.CountryServiceImpl" autowire="byName"/>
+	
+	<bean id="orderService" class="com.jtc.service.impl.OrderServiceImpl" autowire="byName"/>
+		
+		 
+	<!-- 缓存系统常用数据 -->
+	<bean class="com.jtc.core.CachedDataProcessor"/>
+</beans>

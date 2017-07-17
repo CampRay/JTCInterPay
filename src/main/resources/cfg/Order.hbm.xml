@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.jtc.dto" default-lazy="false">
+	<class name="Torder" table="pg_order">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" length="11" />
+			<generator class="native"></generator>
+		</id>
+		<property name="orderNo" type="java.lang.String">
+			<column name="order_no" length="50" not-null="true"/>			
+		</property>
+		<property name="orderTitle" type="java.lang.String">
+			<column name="order_title" length="100" not-null="false"/>			
+		</property>
+		<property name="orderDesc" type="java.lang.String">
+			<column name="order_desc" length="5000" not-null="false"/>			
+		</property>
+		<property name="orderAmount" type="java.lang.Double">
+			<column name="order_amount" not-null="true"/>			
+		</property>
+		<property name="currencyCode" type="java.lang.String">
+			<column name="currency_code" length="3" not-null="true"/>			
+		</property>
+		<property name="countryCode" type="java.lang.String">
+			<column name="country_code" length="2" not-null="true"/>			
+		</property>
+		<property name="custom" type="java.lang.String">
+			<column name="custom" length="100" not-null="false"/>			
+		</property>
+		
+		<many-to-one name="app" column="app_id" class="com.jtc.dto.Tapplication" not-null="true" lazy="false"/>
+		<many-to-one name="channel" column="channel_id" class="com.jtc.dto.Tchannel" not-null="true" lazy="false"/>		
+		
+		<property name="transactionNo" type="java.lang.String">
+			<column name="transaction_no" length="50" not-null="false"/>			
+		</property>
+		<property name="clientIp" type="java.lang.String">
+			<column name="client_ip" length="20" not-null="false"/>			
+		</property>
+		
+		<property name="amountSettle" type="java.lang.Double">
+			<column name="amount_settle" not-null="true"/>			
+		</property>		
+		<property name="amountRefunded" type="java.lang.Double">
+			<column name="amount_refunded" not-null="true"/>			
+		</property>
+		<property name="createdTime" type="java.lang.Long">
+            <column name="created_time" length="20" not-null="true"/>              
+        </property>
+        <property name="paidTime" type="java.lang.Long">
+            <column name="paid_time" length="20" not-null="false"/>              
+        </property>
+        <property name="refundedTime" type="java.lang.Long">
+            <column name="refunded_time" length="20" not-null="false"/>              
+        </property>
+		
+        <property name="refunded" type="java.lang.Boolean">
+			<column name="refunded" not-null="true" default="0"/>
+		</property>
+		<property name="status" type="java.lang.Integer">
+			<column name="status" not-null="true" default="0">
+			    <comment>0处理中,  1 支付成功, 2 支付失败</comment>
+			</column>
+		</property>
+        		
+		<property name="failureCode" type="java.lang.String">
+			<column name="failure_code" length="10" not-null="false"/>			
+		</property>
+		<property name="notified" type="java.lang.Boolean">
+			<column name="notified" not-null="true" default="0"/>
+		</property>
+		<property name="returnUrl" type="java.lang.String">
+			<column name="return_url" length="256" not-null="false"/>			
+		</property>
+		<property name="notifyUrl" type="java.lang.String">
+			<column name="notify_url" length="256" not-null="false"/>			
+		</property>
+		<property name="charset" type="java.lang.String">
+			<column name="charset" length="20" not-null="true"/>			
+		</property>
+		<property name="sign" type="java.lang.String">
+			<column name="sign" length="50" not-null="true"/>			
+		</property>
+		
+	</class>
+</hibernate-mapping>
