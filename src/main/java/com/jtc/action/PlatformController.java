@@ -95,7 +95,7 @@ public class PlatformController extends BaseController {
 	 */     
     @RequestMapping(value="/webapi",method=RequestMethod.POST)
 	public ModelAndView webapi(HttpServletRequest request,HttpServletResponse response,CheckoutModel checkoutModel) {
-    	logger.info("=============================webapi: "+checkoutModel.getCmd());
+    	
     	String cmd=checkoutModel.getCmd();
     	if(StringTool.isEmptyOrNull(cmd)){
     		return new ModelAndView(new RedirectView(request.getContextPath()+"/platform/result"),"msgCode", "error.platform.appid.empty");
@@ -248,7 +248,7 @@ public class PlatformController extends BaseController {
     	
     	//處理result命令,向應用發送同步結果通知後，應用發送的結果查詢請求
     	if("check".equalsIgnoreCase(cmd)){
-    		logger.info("check=============check： Request URI: "+request.getRequestURI());    		
+    		logger.info("=============================webapi: "+checkoutModel.getCmd());    		  	
     		String txnIdStr=checkoutModel.getTxn_id();
     		String token=checkoutModel.getToken();
     		if(StringTool.isEmptyOrNull(txnIdStr)||StringTool.isEmptyOrNull(token)){    			

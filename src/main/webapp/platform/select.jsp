@@ -30,7 +30,7 @@ String rootPath = request.getScheme()+"://" + request.getServerName()+ ( request
 
 <div class="container content">
 	<div class="row content-title">
-		<div class="col-md-12 "><h3>JTC 支付平臺</h3></div>
+		<!-- <div class="col-md-12 "><h3>JTC 支付平臺</h3></div> -->
 	</div>
 	<div class="row content-body">
 		<c:if test="${not empty errorMsg}">
@@ -42,62 +42,71 @@ String rootPath = request.getScheme()+"://" + request.getServerName()+ ( request
 		<div class="col-md-12">			
 			<div class="row">
 				<div class="col-md-12">
-					<table class="table table-bordered">
+					<table width="100%">
 						<tr>
 							<td>
-								<div class="row">
-									<div class="col-lg-4 col-md-4 col-xs-12" style=""><h4>支付金額：<strong style="color:red">${symbols}${order.orderAmount}</strong></h4></div>
-									<div class="col-lg-4 col-md-4 col-xs-12" style=""><h4>應用名稱：${order.app.name}</h4></div>
-									<div class="col-lg-4 col-md-4 col-xs-12" style=""><h4>訂單編號：${order.orderNo}</h4></div>
-								</div>
+								<div style="margin:5px 0;"><div class="info-lable">Amount 支付金額：</div><div class="info-value">${symbols}${order.orderAmount}</div></div>								
+							</td>
+						</tr>
+						<tr>	
+							<td>
+								<div style="margin:5px 0;"><div class="info-lable">Vendor 應用名稱：</div><div class="info-value">${order.app.name}</div></div>								
+							</td>
+						</tr>
+						<tr>	
+							<td>
+								<div style="margin:5px 0;"><div class="info-lable">Order no. 訂單編號：</div><div class="info-value">${order.orderNo}</div></div>								
 							</td>
 						</tr>
 					</table>
+					
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-12"><h4>選擇支付方式</h4></div>
+			<div class="row select-title">
+				<div class="col-md-12"><h5><strong>Choose Payment Method 選擇支付方式：</strong></h5>
+				<div style="height:1px;background-color:#206fd2;margin:5px 0;"></div>
+				</div>				
 			</div>
+			<form id="selectForm" action="<%=rootPath %>/platform/pay" method="post">
+			<input type="hidden" name="id" value="${order.id}">
+			<input type="hidden" name="orderNo" value="${order.orderNo}">
+			<input type="hidden" name="orderTitle" value="${order.orderTitle}">
+			<input type="hidden" name="orderDesc" value="${order.orderDesc}">
+			<input type="hidden" name="custom" value="${order.custom}">
+			<input type="hidden" name="orderAmount" value="${order.orderAmount}">
+			<input type="hidden" name="currencyCode" value="${order.currencyCode}">
+			<input type="hidden" name="countryCode" value="${order.countryCode}">
+			<input type="hidden" name="app.id" value="${order.app.id}">			
+			<input type="hidden" name="clientIp" value="${order.clientIp}">
+			<input type="hidden" name="returnUrl" value="${order.returnUrl}">
+			<input type="hidden" name="notifyUrl" value="${order.notifyUrl}">	
 			<div class="row">
 				<div class="col-md-12">
-					<table class="table table-bordered">
-						<tr>
-							<td>
-								<div class="row">
-									<c:forEach var="appChannel" items="${appChannelsList}">
-									<div class="col-lg-2 col-md-3 col-xs-4"><div class="btn-channel ${appChannel.channel.code}" data="${appChannel.channel.id}"></div></div>									
-									</c:forEach>									
-								</div>
-							</td>
-						</tr>
-					</table>
+					<c:forEach var="appChannel" items="${appChannelsList}">
+					<div class="col-lg-2 col-md-3 col-xs-4"><div class="btn-channel ${appChannel.channel.code}"><input type="radio" name="channel.id" style="width:18px;height:38px;" value="${appChannel.channel.id}"/></div></div>														
+					</c:forEach>
 				</div>
 			</div>	
 			<div class="row content-bottom">
-				<div class="col-xs-3 col-xs-offset-9">
-					<form id="selectForm" action="<c:url value="/"/>platform/pay" method="post">
-						<input type="hidden" name="id" value="${order.id}">
-						<input type="hidden" name="orderNo" value="${order.orderNo}">
-						<input type="hidden" name="orderTitle" value="${order.orderTitle}">
-						<input type="hidden" name="orderDesc" value="${order.orderDesc}">
-						<input type="hidden" name="custom" value="${order.custom}">
-						<input type="hidden" name="orderAmount" value="${order.orderAmount}">
-						<input type="hidden" name="currencyCode" value="${order.currencyCode}">
-						<input type="hidden" name="countryCode" value="${order.countryCode}">
-						<input type="hidden" name="app.id" value="${order.app.id}">
-						<input id="channelId" type="hidden" name="channel.id" value="">
-						<input type="hidden" name="clientIp" value="${order.clientIp}">
-						<input type="hidden" name="returnUrl" value="${order.returnUrl}">
-						<input type="hidden" name="notifyUrl" value="${order.notifyUrl}">												
+				<div class="col-xs-3 col-xs-offset-9">					
+																	
 						
-						<button type="submit" class="col-md-12 btn btn-info">立即支付</button>
-					</form>
+						<button type="submit" class="col-md-12 button btn-blue">Next</button>
+					
 				</div>
-			</div>						
+			</div>	
+			</form>					
 		</div>
 		</c:if>
 	</div>
-								
+	<div class="row content-footer">
+		<div class="col-md-12">
+			<div class="footer-image"></div>
+			<div class="footer-text">
+			Payment service provided by JTC 
+			</div>
+		</div>		
+	</div>							
 </div>
 <!-- END LOGIN -->
 
@@ -110,17 +119,12 @@ String rootPath = request.getScheme()+"://" + request.getServerName()+ ( request
 
 <script>
 jQuery(document).ready(function() { 
-	$(".btn-channel").click(function(){
-		$.each( $(".btn-channel"), function(){
-			$(this).removeClass("active");	
-		});
-		$(this).addClass("active");		
+	$(".btn-channel").click(function(){		
+		$(this).children().attr('checked','true');
 	});	
 	
 	$("#selectForm").on("submit",function(){		
-		if($(".btn-channel").is(".active")){
-			var cid=$(".active").attr("data");
-			$("#channelId").val(cid);
+		if($(".btn-channel input:checked").length>0){			
 			return true;
 		}
 		else{

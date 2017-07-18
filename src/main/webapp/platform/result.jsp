@@ -3,31 +3,32 @@
 <%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
-
+<%
+HttpServletRequest httpRequest=(HttpServletRequest)request; 
+String rootPath = request.getScheme()+"://" + request.getServerName()+ ( request.getServerPort()==80?"":(":"+ request.getServerPort()))+request.getContextPath(); 
+%>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
 <!--<![endif]-->
-<!-- BEGIN HEAD -->
+
 <head>
 <meta charset="utf-8"/>
 <title>JTC Payment Platform</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta content="JTC Payment Platform" name="description"/>
-<link href="<c:url value="/"/>assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<link href="<c:url value="/"/>static/css/platform.css" rel="stylesheet" type="text/css"/>
-<!-- END THEME STYLES -->
-<link rel="shortcut icon" href="<c:url value="/"/>static/images/favicon.ico"/>
+<link href="<%=rootPath %>/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="<%=rootPath %>/static/css/platform.css" rel="stylesheet" type="text/css"/>
+<link rel="shortcut icon" href="<%=rootPath %>/static/images/favicon.ico"/>
 </head>
 
 <body>
 
 <div class="container content">
-	<div class="row content-title">
-		<div class="col-md-12 "><h3>JTC 支付平臺</h3></div>
+	<div class="row content-title">		
 	</div>
 	<div class="row content-body">
 		<c:if test="${not empty msg}">
@@ -37,10 +38,16 @@
 		</c:if>
 		
 	</div>
-								
+	<div class="row content-footer">
+		<div class="col-md-12">
+			<div class="footer-image"></div>
+			<div class="footer-text">
+			Payment service provided by JTC 
+			</div>
+		</div>		
+	</div>							
 </div>
-<!-- END LOGIN -->
 
 </body>
-<!-- END BODY -->
+
 </html>
