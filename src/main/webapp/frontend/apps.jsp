@@ -47,16 +47,16 @@
 					<div class="app-tile">
 						<div class="app-tile-container" onclick="javascript:location='<c:url value="/"/>apps/app/<c:out value="${apps.app.id}"/>';">
 							<h4><strong><c:out value="${apps.app.name}"/></strong></h4>
-							<h5>APPID:<c:out value="${apps.app.id}"/></h5>						
+							<h5>APPID:<c:out value="${apps.app.appId}"/></h5>						
 						</div>
 						<div class="app-tile-btns">
-							<div class="app-tile-btn" style="border-bottom:dashed 1px #eee;" onclick="javascript:location='<c:url value="/"/>apps/orders/<c:out value="${apps.app.id}"/>';">
+							<div class="app-tile-btn" style="border-bottom:dashed 1px #eee;" onclick="javascript:location='<c:url value="/"/>apps/app/<c:out value="${apps.app.id}"/>';">
 								<i class="fa fa-list-alt"></i>
-								<h5><s:message code="apps.button.orders"/></h5>
+								<h5><s:message code="apps.button.info"/></h5>
 							</div>
-							<div class="app-tile-btn" style="border-bottom:dashed 1px #eee;border-left:dashed 1px #eee;" onclick="javascript:location='<c:url value="/"/>apps/reports/<c:out value="${apps.app.id}"/>';">
+							<div class="app-tile-btn" style="border-bottom:dashed 1px #eee;border-left:dashed 1px #eee;" onclick="javascript:location='<c:url value="/"/>apps/orders/<c:out value="${apps.app.id}"/>';">
 								<i class="fa fa-bar-chart-o"></i>
-								<h5><s:message code="apps.button.reports"/></h5>
+								<h5><s:message code="apps.button.orders"/></h5>
 							</div>
 							<div class="app-tile-btn" onclick="javascript:location='<c:url value="/"/>apps/channels/<c:out value="${apps.app.id}"/>';">
 								<i class="fa fa-chain"></i>

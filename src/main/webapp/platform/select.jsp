@@ -45,7 +45,7 @@ String rootPath = request.getScheme()+"://" + request.getServerName()+ ( request
 					<table width="100%">
 						<tr>
 							<td>
-								<div style="margin:5px 0;"><div class="info-lable">Amount 支付金額：</div><div class="info-value">${symbols}${order.orderAmount}</div></div>								
+								<div style="margin:5px 0;"><div class="info-lable">Amount 支付金額：</div><div class="info-value">${symbols}<fmt:formatNumber value="${order.orderAmount}" pattern="#0.00"/></div></div>								
 							</td>
 						</tr>
 						<tr>	

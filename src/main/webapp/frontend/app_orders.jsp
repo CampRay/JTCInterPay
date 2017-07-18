@@ -86,7 +86,7 @@
 							<div class="col-md-4 col-sm-6 col-xs-12">
 								<div class="form-group">
 									<div class="col-md-12">
-										<input name="orderNo" type="text" class="form-control" placeholder="<s:message code="app.order.no" />">
+										<input name="id" type="text" class="form-control" placeholder="<s:message code="app.order.no" />">
 									</div>
 								</div>
 							</div>

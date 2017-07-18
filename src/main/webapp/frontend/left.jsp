@@ -13,7 +13,7 @@
 <c:set var="classStr5" value=""/>
 <c:set var="path1" value="${contextPath}/frontend/app.jsp"/>
 <c:set var="path2" value="${contextPath}/frontend/app_orders"/>
-<c:set var="path3" value="${contextPath}/frontend/app_reports"/>
+
 <c:set var="path4" value="${contextPath}/frontend/app_channel"/>
 <c:set var="path5" value="${contextPath}/frontend/app_setting"/>
 
@@ -23,9 +23,7 @@
 <c:if test="${cureReqUri.startsWith(path2)}">				
 	<c:set var="classStr2" value="active"/>							
 </c:if>
-<c:if test="${cureReqUri.startsWith(path3)}">				
-	<c:set var="classStr3" value="active"/>							
-</c:if>
+
 <c:if test="${cureReqUri.startsWith(path4)}">				
 	<c:set var="classStr4" value="active"/>							
 </c:if>
@@ -50,13 +48,7 @@
 					<span class="title" style="padding-left:20px;"><s:message code="app.menu.orders"/></span>
 					
 				</a>
-			</li>
-			<li class="${classStr3}" style="line-height:40px;">
-				<a href="<c:url value="/"/>apps/reports/<c:out value="${sessionScope.appId}"/>">
-					<span class="title" style="padding-left:20px;"><s:message code="app.menu.reports"/></span>
-					
-				</a>
-			</li>	
+			</li>			
 			<li class="${classStr4}" style="line-height:40px;">
 				<a href="<c:url value="/"/>apps/channels/<c:out value="${sessionScope.appId}"/>">
 					<span class="title" style="padding-left:20px;"><s:message code="app.menu.channels"/></span>

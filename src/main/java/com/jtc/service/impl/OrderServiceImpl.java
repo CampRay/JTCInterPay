@@ -92,7 +92,10 @@ public class OrderServiceImpl implements OrderService {
 			for (String key : keys) {
 				String val=jsonObj.getString(key);
 				if(val!=null&&!val.isEmpty()){
-					if(key=="channel.id"){
+					if(key=="id"){
+						criterionsList.add(Restrictions.eq(key, jsonObj.getInteger(key)));
+					}
+					else if(key=="channel.id"){
 						criterionsList.add(Restrictions.eq(key, jsonObj.getInteger(key)));
 					}
 					else if(key=="status"){
