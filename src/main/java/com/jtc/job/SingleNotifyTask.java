@@ -1,7 +1,6 @@
 package com.jtc.job;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,7 +18,11 @@ import com.jtc.commons.SystemConstants;
 import com.jtc.dto.Torder;
 import com.jtc.service.OrderService;
 
-
+/**
+ * 发送支付成功异步通知消息到客户应用
+ * @author Phills
+ *
+ */
 public class SingleNotifyTask implements Runnable {
 	private Logger logger = Logger.getLogger(SingleNotifyTask.class);
 	
@@ -46,11 +49,13 @@ public class SingleNotifyTask implements Runnable {
 		Map<String, Object> formMap=new HashMap<String, Object>();
 		formMap.put("order_amount", order.getOrderAmount());
 		formMap.put("currency_code", order.getCurrencyCode());
+		formMap.put("country_code", order.getCountryCode());
 		formMap.put("order_id", order.getOrderNo());
 		formMap.put("status", SystemConstants.PAYMENT_STATUS.get(order.getStatus()));
 		formMap.put("txn_id", order.getId());
 		formMap.put("sign",order.getSign() );
 		formMap.put("custom",order.getCustom());
+		formMap.put("paidTime", order.getPaidTime());
 		
 		
 		try{
@@ -72,6 +77,7 @@ public class SingleNotifyTask implements Runnable {
 					}
 				}
 				
+				//把需要通知的支付结果数据组合成URL的请求字符串
 				StringBuilder sb=new StringBuilder();				
 				for (Map.Entry<String, Object> entry : formMap.entrySet()) {  
 					sb.append(entry.getKey()+"="+String.valueOf(entry.getValue())+"&");	                
@@ -102,12 +108,15 @@ public class SingleNotifyTask implements Runnable {
 			logger.error("SingleNotifyTask exception: "+me.getMessage());
 		}
 		finally{
-			if(!stopNotify&&num<=4){				
+			if(!stopNotify&&num<=5){				
 				if(num<=3){
-					SystemConstants.scheduledThreadPoolExecutor.schedule(this, num*30, TimeUnit.SECONDS);
+					SystemConstants.scheduledThreadPoolExecutor.schedule(this, num*10, TimeUnit.SECONDS);
+				}
+				else if(num==4){
+					SystemConstants.scheduledThreadPoolExecutor.schedule(this, 1, TimeUnit.HOURS);
 				}
 				else{
-					SystemConstants.scheduledThreadPoolExecutor.schedule(this, 1, TimeUnit.HOURS);
+					SystemConstants.scheduledThreadPoolExecutor.schedule(this, 12, TimeUnit.HOURS);
 				}
 				num++;
 			}
@@ -131,7 +140,7 @@ public class SingleNotifyTask implements Runnable {
 						orderService.updateOrder(order);
 					}
 					//發送異步通知
-					sendNotify(order);
+					this.sendNotify(order);
 				}
 			}
 		}				

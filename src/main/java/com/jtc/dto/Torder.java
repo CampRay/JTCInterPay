@@ -20,7 +20,7 @@ public class Torder implements Serializable {
 	private String orderTitle;
 	
 	private String orderDesc;			
-	
+	//订单总金额
 	private Double orderAmount;
 	
 	private String currencyCode;	
@@ -36,9 +36,9 @@ public class Torder implements Serializable {
 	private String transactionNo;		
 	
 	private String clientIp;
-	
+	//已经结算金额
 	private Double amountSettle=0.00;
-	
+	//已退款金额
 	private Double amountRefunded=0.00;			
 	
 	private Long createdTime;
@@ -48,18 +48,18 @@ public class Torder implements Serializable {
 	private Long paidTime;
 	
 	private String paidTimeStr;
-	
+	//退款时间
 	private Long refundedTime;
 	
 	private String refundedTimeStr;
-	
+	//是否已经开始退款
 	private boolean refunded=false;
 
 	//0处理中,  1 支付成功, 2 支付失败
 	private int status=0;
-	
+	//订单支付失败的错误码
 	private String failureCode;
-	
+	//异步通知状态:0 未通知，1 已通知
 	private boolean notified=false;	
 	
 	private String returnUrl;

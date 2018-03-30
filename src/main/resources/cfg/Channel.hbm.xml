@@ -18,8 +18,10 @@
 			<column name="descr" length="5000" not-null="false"/>			
 		</property>		
 		<property name="code" type="java.lang.String">
-			<column name="code" length="10" not-null="true"/>
+			<column name="code" length="50" not-null="true"/>
 		</property>
-		
+		<property name="status" type="java.lang.Boolean">
+            <column name="status"/>
+        </property>
 	</class>
 </hibernate-mapping>

@@ -52,6 +52,15 @@ public class AppChannelsServiceImpl implements AppChannelsService {
 	public List<TappChannels> getAllChannelsByAppId(int appId) {
 		return appChannelsDao.findBy("app.id", appId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<TappChannels> getEnableChannelsByAppId(int appId) {
+		Criteria criteria=appChannelsDao.createCriteria();
+		criteria=criteria.add(Restrictions.eq("app.id", appId));
+		criteria=criteria.add(Restrictions.eq("status", new Boolean(true)));
+		return criteria.list();
+		
+	}
 
 	
 	public void createAppChannel(TappChannels appChannel) {

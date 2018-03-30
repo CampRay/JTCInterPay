@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%
+HttpServletRequest httpRequest=(HttpServletRequest)request; 
+String rootPath = request.getScheme()+"://" + request.getServerName()+ ( request.getServerPort()==80?"":(":"+ request.getServerPort())); 
+%>
 <!DOCTYPE html>
 
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
@@ -14,7 +18,7 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="utf-8" />
-<title>支付渠道</title>
+<title>渠道配置</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -69,55 +73,101 @@
 				<!-- BEGIN PAGE TITLE & BREADCRUMB-->
 				<div id="msg"></div>
 				<!-- END PAGE TITLE & BREADCRUMB-->
-				
-				<div class="portlet-body">											
-															
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th><s:message code="app.channels.name"/></th>
-								<th><s:message code="app.channels.envi"/></th>
-								<th><s:message code="app.channels.channel"/></th>
-								<th><s:message code="app.channels.status"/></th>
-								<th><s:message code="app.channels.action"/></th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="channel" items="${channelList}">
-							<tr>																															
-								<td><h5>${channel.name}</h5></td>
-								<td><h5>${channel.envi}</h5></td>
-								<td><h5>${channel.code}</h5></td>
-								<td>
-								<c:if test="${channel.status}">				
-									<h5><s:message code="app.channels.enable"/></h5>							
-								</c:if>	
-								<c:if test="${!channel.status}">				
-									<h5><s:message code="app.channels.disable"/></h5>						
-								</c:if>										
-								</td>
-								<td>
-								<a href="<c:url value="/"/>apps/channel/<c:out value="${channel.id}"/>" class="btn blue" style="margin-top:3px"><i class="fa fa-edit"></i> <s:message code="app.channels.setting"/></a>
-								<a href="<c:url value="/"/>apps/enable/<c:out value="${channel.id}"/>" class="btn green" style="margin-top:3px"><i class="fa fa-adjust"></i>
-								<c:if test="${channel.status}"><s:message code="all.table.deactivate"/></c:if>	
-								<c:if test="${!channel.status}"><s:message code="all.table.activate"/></c:if>	 
-								</a>
-								</td>
-							</tr>
-							</c:forEach>
-							
-						</tbody>
-					</table>
-																								
+				<div class="page-bar">
+				<h4 class="page-breadcrumb"><s:message code="app.channel.title"/></h4>
 				</div>
-				
-				
+				<div class="row">
+				<div class="col-md-12">
+					<div class="portlet box green-haze">
+						<div class="portlet-title">
+							<div class="caption">
+								<span class="caption-subject bold">${appChannel.channel.name }</span>
+								<c:if test="${appChannel.channel.status}">				
+									<span>(<s:message code="app.channels.enable"/>)</span>							
+								</c:if>	
+								<c:if test="${!appChannel.channel.status}">				
+									<span>(<s:message code="app.channels.disable"/>)</span>						
+								</c:if>	 
+								
+							</div>
+							<div class="actions"><a class="btn btn-green"></a></div>
+						</div>
+						<div class="portlet-body form">
+							<form class="form-horizontal" action="<c:url value="/"/>apps/channelSetting" id="channelSettingForm" method="post" name="channelSettingForm">
+								<input type="hidden" class="form-control" name="id" value="${appChannel.id}"/>
+								<input type="hidden" class="form-control" id="isSandbox" name="channelSetting.sandbox" value="${appChannel.channelSetting.sandbox}"/>
+								<input type="hidden" class="form-control" name="app.id" value="${appChannel.app.id}"/>
+								<input type="hidden" class="form-control" name="channel.id" value="${appChannel.channel.id}"/>
+								<div class="form-body">	
+									<div class="form-group">
+										<label class="col-md-3 control-label"><h5>Sandbox Model</h5></label>
+										<div class="col-md-5">
+											<c:if test="${appChannel.channelSetting.sandbox}">
+												<input type="checkbox" id="checkSandbox" name="channelSettingSandbox" checked="checked"/>
+											</c:if>
+											<c:if test="${!appChannel.channelSetting.sandbox}">
+												<input type="checkbox" id="checkSandbox" name="channelSettingSandbox"/>
+											</c:if>	
+											<span class="help-block">此處配置是否启用支付宝沙箱測試环境</span>
+										</div>
+									</div>								
+								    <div class="form-group">
+										<label class="col-md-3 control-label"><h5><s:message code="app.channel.alipay.appid"/></h5></label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" name="channelSetting.appId" value="${appChannel.channelSetting.appId }"/>
+											<span class="help-block"><s:message code="app.channel.alipay.appid.hint"/></span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label"><h5><s:message code="app.channel.alipay.publickey"/></h5></label>
+										<div class="col-md-5">
+											<textarea  class="form-control" name="channelSetting.publicKey" ><c:if test="${appChannel.channelSetting.publicKey!=null&&!appChannel.channelSetting.publicKey.isEmpty()}">${appChannel.channelSetting.publicKey.substring(0,20)}********************</c:if></textarea>
+											<span class="help-block"><s:message code="app.channel.alipay.publickey.hint"/></span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label"><h5><s:message code="app.channel.alipay.privatekey"/></h5></label>
+										<div class="col-md-5">
+											<textarea  class="form-control" name="channelSetting.privateKey" ><c:if test="${appChannel.channelSetting.privateKey!=null&&!appChannel.channelSetting.privateKey.isEmpty()}">${appChannel.channelSetting.privateKey.substring(0,20)}********************</c:if></textarea>
+											<span class="help-block"><s:message code="app.channel.alipay.privatekey.hint"/></span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label"><h5><s:message code="app.channel.alipay.returnURL"/></h5></label>
+										<div class="col-md-5">
+											<div class="col-md-12 form-control-static bg-grey">
+												<input type="hidden" class="form-control" name="channelSetting.returnURL" value="<%=rootPath%><c:url value="/syncnotify/"/>${appChannel.channel.code}"/>
+												<h5><%=rootPath%><c:url value="/syncnotify/"/>${appChannel.channel.code}</h5>
+											</div>
+											<span class="help-block"><s:message code="app.channel.alipay.returnURL.hint"/></span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label"><h5><s:message code="app.channel.alipay.ipnURL"/></h5></label>
+										<div class="col-md-5">
+											<div class="col-md-12 form-control-static bg-grey">
+												<input type="hidden" class="form-control" name="channelSetting.ipnURL" value="<%=rootPath%><c:url value="/asyncnotify/"/>${appChannel.channel.code}"/>
+												<h5><%=rootPath%><c:url value="/asyncnotify/"/>${appChannel.channel.code}</h5>
+											</div>
+											<span class="help-block"><s:message code="app.channel.alipay.ipnURL.hint"/></span>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-5 col-md-offset-3">
+											<input type="submit" class="btn green" value="<s:message code="apps.button.save"/>" class="form-control"/>
+											<a href="<c:url value="/"/>apps/channels/${appChannel.app.id}" class="btn default"><s:message code="apps.button.cancel"/></a>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>	
+					</div>
+					</div>
+				</div>						
 			<!-- END PAGE CONTENT -->			
 			</div>
 		</div>
 	</div>
-
-
 
 
 	<!-- END CONTAINER -->
@@ -166,13 +216,14 @@
 
 	<script src="<c:url value="/"/>assets/global/plugins/json/json2.js" type="text/javascript"></script>
 	<script src="<c:url value="/"/>assets/global/scripts/metronic.js" type="text/javascript"></script>	
-	<script src="<c:url value="/"/>assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-	<script src="<c:url value="/"/>static/js/common.js"></script>		
+	<script src="<c:url value="/"/>assets/admin/layout/scripts/layout.js" type="text/javascript"></script>		
 	<script>
 		jQuery(document).ready(function() {
-
 			Metronic.init(); // init metronic core components
-			Layout.init(); // init current layout										
+			Layout.init(); // init current layout		
+			$("#checkSandbox").change(function(){
+				$("#isSandbox").val($("#checkSandbox").is(':checked'));
+			});
 		});
 	</script>
 </body>

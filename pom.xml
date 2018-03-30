@@ -2,12 +2,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.campray</groupId>
-  <artifactId>meik</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <groupId>com.jtc</groupId>
+  <artifactId>jtcinterpay</artifactId>
+  <version>1.0.1</version>
   <packaging>war</packaging>
 
-  <name>meik</name>
+  <name>jtc</name>
   <url></url>
 
   <properties>
@@ -157,9 +157,29 @@
     	<artifactId>commons-httpclient</artifactId>
     	<version>3.1</version>
     </dependency>
+    <dependency>
+    	<groupId>commons-logging</groupId>
+    	<artifactId>commons-logging</artifactId>
+    	<version>1.1.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.httpcomponents</groupId>
+    	<artifactId>httpcore</artifactId>
+    	<version>4.0.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.httpcomponents</groupId>
+    	<artifactId>httpclient</artifactId>
+    	<version>4.0.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.google.zxing</groupId>
+    	<artifactId>core</artifactId>
+    	<version>3.3.1</version>
+    </dependency>
   </dependencies>
   <build>
-    <finalName>meik</finalName>
+    <finalName>jtc</finalName>
     <plugins><!-- tomcat 的插件 -->
 	<plugin>
 		<groupId>org.apache.tomcat.maven</groupId>

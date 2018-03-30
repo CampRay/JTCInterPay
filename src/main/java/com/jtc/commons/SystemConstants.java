@@ -97,4 +97,10 @@ public class SystemConstants {
 		put(3, "refunded");		
 	}
    };
+   
+   
+   public static final String CHANNEL_CODE_PAYPAL_PC="paypal_pc";
+   public static final String CHANNEL_CODE_ALIPAY_PC="alipay_pc";
+   public static final String CHANNEL_CODE_APMP_ALIPAY="apmp_alipay";
+   public static final String CHANNEL_CODE_APMP_WEIXIN="apmp_weixin";
 }

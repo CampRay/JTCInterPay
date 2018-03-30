@@ -65,7 +65,34 @@ h1,h2,h3,h4,h5,h6{
 	background: url(../images/paypal.png) no-repeat  center;
 }
 
+.alipay_pc{
+	width:140px;
+	height:50px;	
+	cursor:pointer;
+	margin:10px 0;
+	background: url(../images/alipay.png) no-repeat  center;
+}
+
+.apmp_alipay{
+	width:190px;
+	height:50px;	
+	cursor:pointer;
+	margin:10px 0;
+	background: url(../images/apmp_alipay.png) no-repeat  center;
+}
+
+.apmp_weixin{
+	width:190px;
+	height:50px;	
+	cursor:pointer;
+	margin:10px 0;
+	background: url(../images/apmp_weixin.png) no-repeat  center;
+}
+
 .paypal_pc.active{
+	border:1px solid #ff8800;	
+}
+.alipay_pc.active{
 	border:1px solid #ff8800;	
 }
 

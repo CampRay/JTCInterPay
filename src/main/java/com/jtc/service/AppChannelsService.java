@@ -14,6 +14,8 @@ public interface AppChannelsService {
 	
 	List<TappChannels> getAllChannelsByAppId(int appId);
 	
+	List<TappChannels> getEnableChannelsByAppId(int appId);
+	
 	void createAppChannel(TappChannels appChannel);
 	
 	void updateAppChannel(TappChannels appChannel);

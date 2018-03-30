@@ -10,25 +10,27 @@ import com.jtc.model.ChannelSetting;
 
 
 /**
- * The persistent class for the group_user database table.
+ * 应用下的支付渠道对象
  * 
  */
 public class TappChannels implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;		
-
+	//对应的应用
 	private Tapplication app;		
-	
-	private Tchannel channel;
+	//对应的渠道表对象	
+	private Tchannel channel; 
 	
 	private Long createdTime;
 	
 	private String createdTimeStr;
-	
+	//渠道的相关配置，以Json字符串格式保存
 	private String setting;
 	
 	private ChannelSetting channelSetting=new ChannelSetting();
+	
+	private boolean status;//用户是否使用此渠道
 	
 
 	public TappChannels() {
@@ -96,6 +98,15 @@ public class TappChannels implements Serializable {
 
 	public void setChannelSetting(ChannelSetting channelSetting) {		
 		this.channelSetting = channelSetting;		
-	}		
+	}	
+	
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 
 }

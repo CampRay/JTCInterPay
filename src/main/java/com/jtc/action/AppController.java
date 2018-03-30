@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.alibaba.fastjson.JSON;
 import com.jtc.commons.MyException;
 import com.jtc.commons.SecurityTools;
+import com.jtc.commons.SystemConstants;
 import com.jtc.dto.TadminApps;
 import com.jtc.dto.TadminUser;
 import com.jtc.dto.TappChannels;
@@ -126,7 +128,7 @@ public class AppController extends BaseController {
 	}
 	
 	/**
-	 * <p>Description: </p>
+	 * <p>Description:查看指定应用的支付记录 </p>
 	 * @Title: app 
 	 * @param request
 	 * @param appId	 
@@ -188,7 +190,7 @@ public class AppController extends BaseController {
 	}
 	
 	/**
-	 * <p>Description: </p>
+	 * <p>Description:查看指定应用的所有支付渠道 </p>
 	 * @Title: appChannels 
 	 * @param request
 	 * @param appId	 
@@ -207,7 +209,7 @@ public class AppController extends BaseController {
 			for(TappChannels appChannel : appsChannels) {
 				for (Tchannel channel : channels) {
 					if(appChannel.getChannel().getId()==channel.getId()){
-						channel.setStatus(true);
+						channel.setStatus(appChannel.isStatus());
 						break;
 					}
 				}
@@ -221,7 +223,7 @@ public class AppController extends BaseController {
 	}
 	
 	/**
-	 * <p>Description:查看渠道信息 </p>
+	 * <p>Description:查看指定的某个渠道的配置信息 </p>
 	 * @Title: appChannels 
 	 * @param request
 	 * @param appId	 
@@ -238,25 +240,59 @@ public class AppController extends BaseController {
 			if(appChannel==null){
 				appChannel=new TappChannels();	
 				appChannel.setApp(adminApp.getApp());
-				Tchannel channel=channelService.getChannelById(channelId);	
-				channel.setStatus(false);
-				appChannel.setChannel(channel);					
-			}
-			else{
-//				if(!StringTool.isEmptyOrNull(appChannel.getSetting())){
-//					//JSONObject jsonObj = (JSONObject) JSON.parse(settingJsonStr);
-//					ChannelSetting channelSetting = (ChannelSetting) JSON.parse(appChannel.getSetting());
-//					appChannel.setChannelSetting(channelSetting);
-//				}
-				appChannel.getChannel().setStatus(true);
+				appChannel.setCreatedTime(System.currentTimeMillis());
+				Tchannel channel=channelService.getChannelById(channelId);					
+				appChannel.setChannel(channel);	
+				appChannelsService.createAppChannel(appChannel);
 			}
 
+			String channelCode=appChannel.getChannel().getCode();
+			mav.setViewName("frontend/app_channel_setting_"+channelCode);
+			appChannel.getChannelSetting();
 			mav.addObject("appChannel", appChannel);
-
+			
 		}
-		mav.setViewName("frontend/app_channel_setting");
+		else{
+			mav.addObject("errorMSG", "");
+			mav.setViewName("frontend/app_channels");
+		}
+		
 		return mav;
 	}
+	
+	
+	/**
+	 * <p>Description:启用或禁用指定的渠道 </p>
+	 * @Title: appChannels 
+	 * @param request
+	 * @param appId	 
+	 * @throws
+	 */
+	@RequestMapping(value="enable/{channelId}",method=RequestMethod.GET)	
+	public ModelAndView enable(HttpServletRequest request,@PathVariable int channelId){						
+		TadminUser tUser=getSessionUser(request);
+		Integer appId=(Integer)request.getSession().getAttribute("appId");
+		TadminApps adminApp=adminAppsService.getAdminApp(appId, tUser.getAdminId());
+		if(adminApp!=null){
+			TappChannels appChannel=appChannelsService.getAppChannel(appId, channelId);
+			if(appChannel==null){
+				appChannel=new TappChannels();	
+				appChannel.setApp(adminApp.getApp());
+				appChannel.setStatus(!appChannel.isStatus());
+				appChannel.setCreatedTime(System.currentTimeMillis());	
+				Tchannel channel=channelService.getChannelById(channelId);					
+				appChannel.setChannel(channel);	
+				appChannelsService.createAppChannel(appChannel);				
+			}
+			else{				
+				appChannel.setStatus(!appChannel.isStatus());	
+				appChannelsService.updateAppChannel(appChannel);
+			}	
+			
+		}		
+		return new ModelAndView(new RedirectView(request.getContextPath()+"/apps/channels/"+appId));
+	}
+	
 	
 	/**
 	 * <p>Description: 更新渠道配置</p>
@@ -268,19 +304,28 @@ public class AppController extends BaseController {
 	@RequestMapping(value="channelSetting",method=RequestMethod.POST)	
 	public ModelAndView channelSetting(HttpServletRequest request,TappChannels appChannel){		
 		ModelAndView mav=new ModelAndView();
-		if(appChannel.getChannelSetting()!=null){			
-			appChannel.setSetting(JSON.toJSONString(appChannel.getChannelSetting()));
+		if(appChannel.getChannelSetting()!=null){
+			if(appChannel.getId()==0){			
+				appChannel.setCreatedTime(System.currentTimeMillis());	
+				appChannel.setSetting(JSON.toJSONString(appChannel.getChannelSetting()));
+				appChannelsService.createAppChannel(appChannel);
+			}
+			else{
+				TappChannels appChannelDB=appChannelsService.getAppChannelById(appChannel.getId());
+				if(appChannel.getChannelSetting().getPublicKey()!=null&&appChannel.getChannelSetting().getPublicKey().endsWith("********************")){
+					appChannel.getChannelSetting().setPublicKey(appChannelDB.getChannelSetting().getPublicKey());
+				}
+				if(appChannel.getChannelSetting().getPrivateKey()!=null&&appChannel.getChannelSetting().getPrivateKey().endsWith("********************")){
+					appChannel.getChannelSetting().setPrivateKey(appChannelDB.getChannelSetting().getPrivateKey());
+				}				
+				appChannel.setSetting(JSON.toJSONString(appChannel.getChannelSetting()));
+				appChannelDB.setSetting(appChannel.getSetting());
+				appChannelsService.updateAppChannel(appChannelDB);
+			}						
+			
 		}
 		
-		if(appChannel.getId()==0){			
-			appChannel.setCreatedTime(System.currentTimeMillis());	
-			appChannelsService.createAppChannel(appChannel);
-		}
-		else{
-			TappChannels appChannelDB=appChannelsService.getAppChannelById(appChannel.getId());
-			appChannelDB.setSetting(appChannel.getSetting());
-			appChannelsService.updateAppChannel(appChannelDB);
-		}
+		
 		mav.setViewName("redirect:/apps/channel/"+appChannel.getChannel().getId());
 		return mav;
 	}
